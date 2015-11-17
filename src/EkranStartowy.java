@@ -73,7 +73,7 @@ public class EkranStartowy extends JFrame{
     {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Poziom poziom1 = new Poziom(1280, 800, poziomTrudnosci, 6);
+            Poziom poziom1 = new Poziom(1280, 800, poziomTrudnosci, 8);
         }
     }
 
