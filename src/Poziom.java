@@ -11,10 +11,12 @@ public class Poziom extends JFrame {
     JButton dmuchnijBTN;
     double potrzebnyCzasDmuchniecia;
     double aktualnyCzasDmuchniecia = 0;
-    final int maksymalnyCzasDmuchniecia = 15;
-    javax.swing.Timer timer1 = new javax.swing.Timer(500, new timerListener());
+    final int maksymalnyCzasDmuchniecia = 100;
+    javax.swing.Timer timer1 = new javax.swing.Timer(50, new timerListener());
     boolean czyRosnie = false;
     int witdh, height;
+    public int mocDmuchniecia;
+    Label moc;
 
     public Poziom (int witdh, int height, int poziomTrudnosci, double p)
     {
@@ -24,6 +26,7 @@ public class Poziom extends JFrame {
         this.height = height;
         setLayout(null);
         setSize(witdh,height);
+        this.addKeyListener(new ZmienMoc());
         init();
         setVisible(true);
     }
@@ -32,10 +35,20 @@ public class Poziom extends JFrame {
     {
         dmuchnijBTN = new JButton("DMUCHNIJ");
         dmuchnijBTN.setSize(200,60);
-        System.out.println(witdh + " " + height);
         dmuchnijBTN.setLocation(losujPolozenie(witdh, height));
         dmuchnijBTN.addMouseListener(new DmuchnijClick());
         add(dmuchnijBTN);
+
+        moc = new Label("teskt");
+        moc.setSize(200,200);
+        moc.setLocation(500,150);
+        moc.setVisible(true);
+        moc.setForeground(Color.blue);
+        moc.setBackground(this.getBackground());
+        int fontSize=20;
+        Font font = new Font("Helvetica", Font.BOLD, fontSize);
+        moc.setFont(font);
+        add(moc);
 
         timer1.start();
     }
@@ -49,11 +62,11 @@ public class Poziom extends JFrame {
         double prosWysD = prosWys;
         int wypelnienie = (int)((aktualnyCzasDmuchniecia/maksymalnyCzasDmuchniecia)*prosWysD);
         g.drawRect(prosX,prosY-1,prosSzer,prosWys+1);
-        if(potrzebnyCzasDmuchniecia + 1 >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - 1 <= aktualnyCzasDmuchniecia)
+        if(potrzebnyCzasDmuchniecia + 10 >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - 10 <= aktualnyCzasDmuchniecia)
         {
             g.setColor(Color.green);
         }
-        else if (potrzebnyCzasDmuchniecia - 2 == aktualnyCzasDmuchniecia)
+        else if (potrzebnyCzasDmuchniecia - 20 <= aktualnyCzasDmuchniecia && aktualnyCzasDmuchniecia < potrzebnyCzasDmuchniecia)
         {
             g.setColor((Color.orange));
         }
@@ -86,6 +99,19 @@ public class Poziom extends JFrame {
         }
     }
 
+    class ZmienMoc extends KeyAdapter
+    {
+            public void keyTyped(KeyEvent e)
+            {
+                int a = e.getKeyCode();
+                super.keyTyped(e);
+                char c = e.getKeyChar();
+                String s = "" + 'c';
+                System.out.println(a);
+                moc.setText(s);
+            }
+    }
+
     private boolean sprawdzWynik()
     {
         if(potrzebnyCzasDmuchniecia + 1 >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - 1 <= aktualnyCzasDmuchniecia)
@@ -103,10 +129,9 @@ public class Poziom extends JFrame {
         Dimension d = dmuchnijBTN.getSize();
         int w = d.height;
         int s = d.width;
-        System.out.println(w + " " + s);
         Random rand = new Random();
-        int sze = rand.nextInt(width);
-        int wys = rand.nextInt(height);
+        int sze = rand.nextInt(width - s);
+        int wys = rand.nextInt(height - w);
         Point pol = new Point(sze, wys);
         return pol;
     }

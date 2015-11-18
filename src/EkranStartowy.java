@@ -1,7 +1,5 @@
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 /**
  * Created by Amadeusz on 17.11.2015.
@@ -73,7 +71,7 @@ public class EkranStartowy extends JFrame{
     {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Poziom poziom1 = new Poziom(1280, 800, poziomTrudnosci, 8);
+            Poziom poziom1 = new Poziom(1280, 800, poziomTrudnosci, 50);
         }
     }
 
