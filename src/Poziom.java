@@ -6,33 +6,37 @@ import java.util.Random;
 /**
  * Created by Amadeusz on 17.11.2015.
  */
-public class Poziom extends JFrame {
+public class Poziom extends JFrame{
 
     JButton dmuchnijBTN;
     double potrzebnyCzasDmuchniecia;
     double aktualnyCzasDmuchniecia = 0;
     final int maksymalnyCzasDmuchniecia = 100;
+    final int blad = 10;
     javax.swing.Timer timer1 = new javax.swing.Timer(50, new timerListener());
     boolean czyRosnie = false;
     int witdh, height;
     public int mocDmuchniecia;
     Label moc;
+    int poziomTrudnosci;
 
-    public Poziom (int witdh, int height, int poziomTrudnosci, double p)
+    public Poziom (int witdh, int height, int poziomTrudnosci)
     {
         super("Smok Wawelski");
-        this.potrzebnyCzasDmuchniecia = p;
         this.witdh = witdh;
         this.height = height;
+        this.poziomTrudnosci = poziomTrudnosci;
         setLayout(null);
         setSize(witdh,height);
-        this.addKeyListener(new ZmienMoc());
+        addKeyListener(new ZmienMoc());
         init();
         setVisible(true);
     }
 
     private void init()
     {
+
+        zwrocPotrzebnyCzasDmuchniecia(poziomTrudnosci);
         dmuchnijBTN = new JButton("DMUCHNIJ");
         dmuchnijBTN.setSize(200,60);
         dmuchnijBTN.setLocation(losujPolozenie(witdh, height));
@@ -62,7 +66,7 @@ public class Poziom extends JFrame {
         double prosWysD = prosWys;
         int wypelnienie = (int)((aktualnyCzasDmuchniecia/maksymalnyCzasDmuchniecia)*prosWysD);
         g.drawRect(prosX,prosY-1,prosSzer,prosWys+1);
-        if(potrzebnyCzasDmuchniecia + 10 >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - 10 <= aktualnyCzasDmuchniecia)
+        if(potrzebnyCzasDmuchniecia + blad >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - blad <= aktualnyCzasDmuchniecia)
         {
             g.setColor(Color.green);
         }
@@ -95,7 +99,12 @@ public class Poziom extends JFrame {
 
         public void mouseReleased(MouseEvent e) {
             czyRosnie = false;
-            sprawdzWynik();
+            if (sprawdzWynik())
+                moc.setText("Wygrales");
+            else
+            {
+                moc.setText("Przegrales");
+            }
         }
     }
 
@@ -104,9 +113,8 @@ public class Poziom extends JFrame {
             public void keyTyped(KeyEvent e)
             {
                 int a = e.getKeyCode();
-                super.keyTyped(e);
-                char c = e.getKeyChar();
-                String s = "" + 'c';
+                Character c = e.getKeyChar();
+                String s = "" + c.toString();
                 System.out.println(a);
                 moc.setText(s);
             }
@@ -114,7 +122,7 @@ public class Poziom extends JFrame {
 
     private boolean sprawdzWynik()
     {
-        if(potrzebnyCzasDmuchniecia + 1 >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - 1 <= aktualnyCzasDmuchniecia)
+        if(potrzebnyCzasDmuchniecia + blad >= aktualnyCzasDmuchniecia && potrzebnyCzasDmuchniecia - blad <= aktualnyCzasDmuchniecia)
         {
             return true;
         }
@@ -134,5 +142,28 @@ public class Poziom extends JFrame {
         int wys = rand.nextInt(height - w);
         Point pol = new Point(sze, wys);
         return pol;
+    }
+
+    public double zwrocPotrzebnyCzasDmuchniecia(int poziomTrudnosci)
+    {
+        switch (poziomTrudnosci)
+        {
+            case 1:
+            {
+                potrzebnyCzasDmuchniecia = 35;
+            }
+            break;
+            case 2:
+            {
+                potrzebnyCzasDmuchniecia = 55;
+            }
+            break;
+            case 3:
+            {
+                potrzebnyCzasDmuchniecia = 70;
+            }
+            break;
+        }
+        return  potrzebnyCzasDmuchniecia;
     }
 }

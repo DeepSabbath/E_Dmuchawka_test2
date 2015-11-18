@@ -39,7 +39,7 @@ public class EkranStartowy extends JFrame{
         poziomTrudnyBTN.addMouseListener(new PoziomTrudnyClick());
         add(poziomTrudnyBTN);
 
-        rozpocznijGre = new JButton("Latwy");
+        rozpocznijGre = new JButton("Graj");
         rozpocznijGre.setSize(100,60);
         rozpocznijGre.setLocation(500,600);
         rozpocznijGre.addMouseListener(new RozpocznijGreClick());
@@ -71,7 +71,7 @@ public class EkranStartowy extends JFrame{
     {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Poziom poziom1 = new Poziom(1280, 800, poziomTrudnosci, 50);
+            Poziom poziom1 = new Poziom(1280, 800, poziomTrudnosci);
         }
     }
 
