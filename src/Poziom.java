@@ -1,12 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
 import java.util.Random;
+
 
 /**
  * Created by Amadeusz on 17.11.2015.
  */
-public class Poziom extends JFrame{
+public class Poziom extends JFrame implements KeyListener{
 
     JButton dmuchnijBTN;
     double potrzebnyCzasDmuchniecia;
@@ -19,6 +23,7 @@ public class Poziom extends JFrame{
     public int mocDmuchniecia;
     Label moc;
     int poziomTrudnosci;
+    String s = "";
 
     public Poziom (int witdh, int height, int poziomTrudnosci)
     {
@@ -28,8 +33,10 @@ public class Poziom extends JFrame{
         this.poziomTrudnosci = poziomTrudnosci;
         setLayout(null);
         setSize(witdh,height);
-        addKeyListener(new ZmienMoc());
         init();
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
         setVisible(true);
     }
 
@@ -78,6 +85,36 @@ public class Poziom extends JFrame{
             g.setColor(Color.red);
         }
         g.fillRect(prosX+1,(prosY+prosWys-wypelnienie),prosSzer-1,wypelnienie);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int a = e.getKeyCode();
+        Character c = e.getKeyChar();
+        s +=  c.toString();
+        System.out.println(a);
+        //moc.setText(s);
+
+        if (a == KeyEvent.VK_UP)
+        {
+            mocDmuchniecia++;
+        }
+
+        if (a == KeyEvent.VK_DOWN)
+        {
+            mocDmuchniecia--;
+        }
+        moc.setText("" + mocDmuchniecia);
     }
 
     private class timerListener implements ActionListener
@@ -139,7 +176,7 @@ public class Poziom extends JFrame{
         int s = d.width;
         Random rand = new Random();
         int sze = rand.nextInt(width - s);
-        int wys = rand.nextInt(height - w);
+        int wys = rand.nextInt(height - 2*w);
         Point pol = new Point(sze, wys);
         return pol;
     }
